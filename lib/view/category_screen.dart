@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lat_prochain/view/add_category_screen.dart';
 import '../controller/category_controller.dart';
 
 class CategoryScreen extends StatelessWidget {
@@ -10,29 +11,40 @@ class CategoryScreen extends StatelessWidget {
     return Scaffold(
       appBar: _buildAppBar(controller, context),
       drawer: _buildDrawer(),
-      body: TabBarView(
-        controller: controller.tabController,
-        children: [
-          EmptyCategoryWidget(categoryName: 'Kategori'),
-          EmptyCategoryWidget(categoryName: 'Sub kategori'),
-        ],
-      ),
+      body: Obx(() {
+        if (controller.categories.isEmpty) {
+          return TabBarView(
+            controller: controller.tabController,
+            children: [
+              EmptyCategoryWidget(categoryName: 'Kategori'),
+              EmptyCategoryWidget(categoryName: 'Sub kategori'),
+            ],
+          );
+        }
+        return TabBarView(
+          controller: controller.tabController,
+          children: [
+            _buildCategoryList(controller.categories, 'Kategori'),
+           // _buildCategoryList(controller.subCategories, 'Sub kategori'),
+          ],
+        );
+      }),
     );
   }
 
   PreferredSizeWidget _buildAppBar(CategoryController controller, BuildContext context) {
     return AppBar(
-      title: Text(
+      title: const Text(
         'Daftar Kategori',
         style: TextStyle(color: Colors.white, fontSize: 18),
       ),
-      backgroundColor: Color(0xFF5F3DC4),
+      backgroundColor: const Color(0xFF5F3DC4),
       elevation: 0,
       centerTitle: true,
       leading: IconButton(
-        icon: Icon(Icons.menu, color: Colors.white), 
+        icon: const Icon(Icons.menu, color: Colors.white),
         onPressed: () {
-          Scaffold.of(context).openDrawer(); 
+          Scaffold.of(context).openDrawer();
         },
       ),
       bottom: TabBar(
@@ -40,7 +52,7 @@ class CategoryScreen extends StatelessWidget {
         labelColor: Colors.white,
         unselectedLabelColor: Colors.white.withOpacity(0.6),
         indicatorColor: Colors.white,
-        tabs: [
+        tabs: const [
           Tab(text: 'Kategori'),
           Tab(text: 'Sub kategori'),
         ],
@@ -53,7 +65,7 @@ class CategoryScreen extends StatelessWidget {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          DrawerHeader(
+          const DrawerHeader(
             decoration: BoxDecoration(
               color: Color(0xFF5F3DC4),
             ),
@@ -66,19 +78,30 @@ class CategoryScreen extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.category),
-            title: Text('Kategori'),
-            onTap: () {
-            },
+            leading: const Icon(Icons.category),
+            title: const Text('Kategori'),
+            onTap: () {},
           ),
           ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Pengaturan'),
-            onTap: () {
-            },
+            leading: const Icon(Icons.settings),
+            title: const Text('Pengaturan'),
+            onTap: () {},
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildCategoryList(List categories, String categoryName) {
+    return ListView.builder(
+      itemCount: categories.length,
+      itemBuilder: (context, index) {
+        final category = categories[index];
+        return ListTile(
+          title: Text(category['name'] ?? ''),
+          subtitle: Text('Kode: ${category['code'] ?? ''}'),
+        );
+      },
     );
   }
 }
@@ -92,8 +115,8 @@ class EmptyCategoryWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 20),
-        padding: EdgeInsets.all(16),
+        margin: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.all(16),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -102,16 +125,16 @@ class EmptyCategoryWidget extends StatelessWidget {
               color: Colors.grey.shade400,
               size: 60,
             ),
-            SizedBox(height: 12),
+            const SizedBox(height: 12),
             Text(
               'Oops! $categoryName Kosong :(',
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
             ),
-            SizedBox(height: 4),
+            const SizedBox(height: 4),
             Text(
               'Belum ada data $categoryName',
               style: TextStyle(
@@ -119,19 +142,20 @@ class EmptyCategoryWidget extends StatelessWidget {
                 color: Colors.grey.shade500,
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             ElevatedButton.icon(
               onPressed: () {
+                Get.to(() => AddCategoryScreen());
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF5F3DC4),
+                backgroundColor: const Color(0xFF5F3DC4),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
-                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               ),
-              icon: Icon(Icons.add, color: Colors.white),
-              label: Text(
+              icon: const Icon(Icons.add, color: Colors.white),
+              label: const Text(
                 'Tambah',
                 style: TextStyle(
                   fontSize: 16,

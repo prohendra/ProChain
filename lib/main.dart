@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lat_prochain/view/add_category_screen.dart';
 import 'package:lat_prochain/view/category_screen.dart';
 
 void main() {
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: CategoryScreen(), 
+      home: AddCategoryScreen(), 
     );
   }
 }
