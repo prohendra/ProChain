@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-//import 'package:lat_prochain/view/add_category_screen.dart';
 import 'package:lat_prochain/view/category_screen.dart';
 
 void main() {
